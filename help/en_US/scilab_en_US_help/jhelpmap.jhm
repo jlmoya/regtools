@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE map PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN" "http://java.sun.com/products/javahelp/map_1_0.dtd">
+<map version="1.0">
+<mapID target="index" url="index.html"/>
+<mapID target="section_f29eb84a4bb31f3135768cacf4cf6c59" url="section_f29eb84a4bb31f3135768cacf4cf6c59.html"/>
+<mapID target="ff2n" url="ff2n.html"/>
+<mapID target="fullfact" url="fullfact.html"/>
+<mapID target="linregr" url="linregr.html"/>
+<mapID target="nlinlsq" url="nlinlsq.html"/>
+<mapID target="nlinregr" url="nlinregr.html"/>
+<mapID target="qqplot" url="qqplot.html"/>
+</map>

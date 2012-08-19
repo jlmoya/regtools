@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE toc PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 1.0//EN" "http://java.sun.com/products/javahelp/toc_1_0.dtd">
+<toc version="1.0">
+<tocitem target="index" text="Regression tools (regtools)">
+<tocitem target="section_f29eb84a4bb31f3135768cacf4cf6c59" text="Regression tools (regtools)">
+<tocitem target="ff2n" text="ff2n"/>
+<tocitem target="fullfact" text="fullfact"/>
+<tocitem target="linregr" text="linregr"/>
+<tocitem target="nlinlsq" text="nlinlsq"/>
+<tocitem target="nlinregr" text="nlinregr"/>
+<tocitem target="qqplot" text="qqplot"/>
+</tocitem>
+</tocitem>
+</toc>

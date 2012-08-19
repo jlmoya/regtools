@@ -1,0 +1,89 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>fullfact</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="ff2n.html">&lt;&lt; ff2n</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_f29eb84a4bb31f3135768cacf4cf6c59.html">Regression tools (regtools)</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="linregr.html">linregr &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Regression tools (regtools)</a> &gt;&gt; <a href="section_f29eb84a4bb31f3135768cacf4cf6c59.html">Regression tools (regtools)</a> &gt; fullfact</span>
+
+    <br /><br />
+    <div class="info"></div>
+
+  <div class="refnamediv"><h1 class="refname">fullfact</h1><p class="refpurpose">Define a full factorial design matrix.</p></div>
+
+
+
+<div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3>
+   <div class="synopsis"><pre><span class="default">Design</span><span class="default"> = </span><span class="functionid">fullfact</span><span class="default">(</span><span class="default">levels</span><span class="default">)</span></pre></div></div>
+
+<div class="refsection"><h3 class="title">Parameters</h3>
+   <dl><dt><span class="term">levels:</span>
+      <dd><p class="para">row vector with number of levels for each factor</p></dd></dt>
+   <dt><span class="term">Design:</span>
+      <dd><p class="para">full  factorial design matrix</p></dd></dt>
+   <dt><span class="term">Flag:</span>
+      <dd><p class="para">optional Flag=%T (default) will use [-1 1] or [-1 0 1] as levels for 2 or 3 level factors (otherwise [1 2] and [1 2 3] is used).</p></dd></dt></dl></div>
+
+<div class="refsection"><h3 class="title">Description</h3>
+   <p class="para">Returns a full factorial design matrix where number of levels for each
+factor is given by the respective values in levels.</p>
+   <p class="para"></p></div>
+
+<div class="refsection"><h3 class="title">Examples</h3>
+   <div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabid">Design23</span> <span class="scilaboperator">=</span> <span class="scilabid">fullfact</span><span class="scilabopenclose">(</span><span class="scilabopenclose">[</span><span class="scilabnumber">2</span> <span class="scilabnumber">2</span> <span class="scilabnumber">2</span><span class="scilabopenclose">]</span><span class="scilabopenclose">)</span> <span class="scilabcomment">// 2^3 full factorial design</span>
+<span class="scilabid">Design32</span> <span class="scilaboperator">=</span> <span class="scilabid">fullfact</span><span class="scilabopenclose">(</span><span class="scilabopenclose">[</span><span class="scilabnumber">3</span> <span class="scilabnumber">3</span><span class="scilabopenclose">]</span><span class="scilabopenclose">)</span> <span class="scilabcomment">// 3^2 full factorial design</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+
+<div class="refsection"><h3 class="title">See also</h3>
+   <ul class="itemizedlist"><li class="member"><a href="ff2n.html" class="link">ff2n</a></li></ul></div>
+
+<div class="refsection"><h3 class="title">Authors</h3>
+   <ul class="itemizedlist"><li class="member">T. Pettersen, top@tpett.com</li></ul></div>
+
+<div class="refsection"><h3 class="title">Bibliography</h3>
+   <p class="para">http://www.statsoft.com/textbook/experimental-design</p></div>
+
+
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="ff2n.html">&lt;&lt; ff2n</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_f29eb84a4bb31f3135768cacf4cf6c59.html">Regression tools (regtools)</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="linregr.html">linregr &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

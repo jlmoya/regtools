@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ *
+ * This help file was generated from nlinlsq.sci using help_from_sci().
+ *
+ -->
+
+<refentry version="5.0-subset Scilab" xml:id="nlinlsq" xml:lang="en"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+  <info>
+    <pubdate>$LastChangedDate: 17-May-2012 $</pubdate>
+  </info>
+
+  <refnamediv>
+    <refname>nlinlsq</refname><refpurpose>Non-linear [weighted] least square solver with statistical analysis of the solution.</refpurpose>
+  </refnamediv>
+
+
+
+<refsynopsisdiv>
+   <title>Calling Sequence</title>
+   <synopsis>
+   [p,[stat]]=nlinlsq(funlist,dfun,x,y,[wt],p0,[plo],[pup],[info],[algo],[df])
+   p=nlinlsq(funlist,[],x,y,[],p0) // shortest call - with numerical derivatives
+   nlinlsq(stat)  // print report from a previously solved regression problem.
+   
+   </synopsis>
+</refsynopsisdiv>
+
+<refsection>
+   <title>Parameters</title>
+   <variablelist>
+   <varlistentry><term>funlist:</term>
+      <listitem><para> string - name of non-linear model (or list with additional parameters)</para></listitem></varlistentry>
+   <varlistentry><term>dfun:</term>
+      <listitem><para> optional function returning the derivative of the non-linear model wrt the regression parameters p. If dfun='' numerical derivaties are used.</para></listitem></varlistentry>
+   <varlistentry><term>x:</term>
+      <listitem><para> matrix - independent variables (as column vectors)</para></listitem></varlistentry>
+   <varlistentry><term>y:</term>
+      <listitem><para> column vector - dependent variables</para></listitem></varlistentry>
+   <varlistentry><term>wt:</term>
+      <listitem><para> optional column vector with weights for each dependent variable y (typically wt=(1)./y).</para></listitem></varlistentry>
+   <varlistentry><term>p0:</term>
+      <listitem><para> column vector - inital estimates for regression parameters</para></listitem></varlistentry>
+   <varlistentry><term>plo:</term>
+      <listitem><para> optional column vector - lower bounds for regression parameters</para></listitem></varlistentry>
+   <varlistentry><term>pup:</term>
+      <listitem><para> optional column vector - upper bounds for regression parameters</para></listitem></varlistentry>
+   <varlistentry><term>info:</term>
+      <listitem><para> optional list - output options</para></listitem></varlistentry>
+   <varlistentry><term>info(1):</term>
+      <listitem><para> scalar - =0; (default) no output; =1 summary report after solution; &gt;1 output after every info(1)'th iteration.</para></listitem></varlistentry>
+   <varlistentry><term>info(2):</term>
+      <listitem><para> optional text matrix or space separated string with names for the regression parameters. If not present p(1), p(2),... are used as names for the regression parameters in p.</para></listitem></varlistentry>
+   <varlistentry><term>algo:</term>
+      <listitem><para> optional string - solution method ('qn' -(default) quasi-newton, 'gc' - conjugate gradient, 'nd' - non-differentiable model.)</para></listitem></varlistentry>
+   <varlistentry><term>df:</term>
+      <listitem><para> optional scalar - degrees of freedom for non linear regression problem</para></listitem></varlistentry>
+   <varlistentry><term>p:</term>
+      <listitem><para> vector - least square solution of regression parameters p</para></listitem></varlistentry>
+   <varlistentry><term>stat:</term>
+      <listitem><para> optional structure - statistical data from parmeter estimation problem.</para></listitem></varlistentry>
+   <varlistentry><term>stat.ss :</term>
+      <listitem><para> weighted residual sum of squares ( ss = (wt.*res)'*(wt.*res) )</para></listitem></varlistentry>
+   <varlistentry><term>stat.df :</term>
+      <listitem><para> degrees of freedom ( df = length(y) - length(p) )</para></listitem></varlistentry>
+   <varlistentry><term>stat.res :</term>
+      <listitem><para> vector with residuals ( res = y-funlist(p,x,...) )</para></listitem></varlistentry>
+   <varlistentry><term>stat.p :</term>
+      <listitem><para> vector with solution of the WLSQ problem ( min sum(res.^2) subject to plo le p le pup )</para></listitem></varlistentry>
+   <varlistentry><term>stat.pint :</term>
+      <listitem><para> confidence interval (alfa=5%) for reqression parameters ( pint = devp*cdft('T',df,1-alfa/2,alfa/2) )</para></listitem></varlistentry>
+   <varlistentry><term>stat.covp :</term>
+      <listitem><para> parameter covariance matrix ( covp = inv(df/ss*(J'*J)) where J is the Jacobi matrix of res wrt p at the solution)</para></listitem></varlistentry>
+   <varlistentry><term>stat.corp :</term>
+      <listitem><para> parameter correlation matrix ( corp = covp./sqrt(devp2*devp2'); where devp2=devp.^2; )</para></listitem></varlistentry>
+   <varlistentry><term>stat.devp :</term>
+      <listitem><para> standard error ( devp = sqrt(diag(covp)) ).</para></listitem></varlistentry>
+   </variablelist>
+</refsection>
+
+<refsection>
+   <title>Description</title>
+   <para>
+nlinlsq solves non linear weigthed least square problems
+using the Scilab function optim as the non-linear optimization routine.
+   </para>
+   <para>
+Minimize SS = SUM(i, (wt*(y(i) - f(p,x(i))))^2 ) with respect to plo le p le pup.
+   </para>
+   <para>
+The gradient information for the optim algorithm is estimated numerically using the
+numdiff function, unless dfun is defined - in which case df/dp = dfun(p,x,...) is used.
+dfun(p,x,...) should return [df/dp(1) df/dp(2) ... df/dp(np)] as a column matrix.
+   </para>
+   <para>
+Model parameters are automatically scaled using the values in p0 as scaling factors.
+If max(p/p0)gt1000 or min(p/p0)le1e-3 it may be wise to re run
+nlinlsq with the new solution as initial quess in order to provide better scaling of the model parameters.
+   </para>
+   <para>
+Statistical analysis inspired by the nls function in R (www.r.org) is available through the output variable stat.
+   </para>
+   <para>
+</para>
+</refsection>
+
+<refsection>
+   <title>Examples</title>
+   <programlisting role="example"><![CDATA[
+deff('yhat=nlinmod(p,x)',['yhat=p(1)+p(2)*exp(p(3)*x);']); // define regression model to be fitted
+deff('dydp=dnlinmod(p,x)',['dydp=[ones(x),exp(p(3)*x),p(2)*x.*exp(p(3)*x)];']); // define d(yhat)/dp
+x=-[1:100]'/10; phat=[2;10;0.5];               // generate some data points
+y=nlinmod(phat,x)+grand(100,1,'nor',0,1)/2;    // with with random noice added.
+p0=ones(3,1); // initial estimate for the regression parameters.
+// Solve nonlinear regression problem with output every 4'th iteration and nameing of model parmameters.
+[p,stat]=nlinlsq(list(nlinmod),list(dnlinmod),x,y,[],p0,[],[],list(4,'A B C'));
+
+// Solve weighted nonlinear regression problem with default names for the regression parameters
+// and numerical derivatives.
+[pwt,stat]=nlinlsq(list(nlinmod),'',x,y,(1)./y,p0,[],[],10);
+
+// Show the difference between the two solutions...
+scf(); plot(x,y,'o'); xtitle('Demo of nlinlsq()','x','y=A+B*exp(C*x)')
+plot(x,nlinmod(p,x),'b-'); plot(x,nlinmod(pwt,x),'r-');
+xgrid(); legend('Data','unweighted','weighted',2);
+
+// Solve weighted nonlinear regression problem without analytical derivaties.
+[pwt,stat]=nlinlsq(list(nlinmod),[],x,y,(1)./y,p0,[],[],10);
+
+clc;
+// Display the regression report from the previous solution.
+nlinlsq(stat)
+
+   ]]></programlisting>
+</refsection>
+
+<refsection>
+   <title>See also</title>
+   <simplelist type="inline">
+   <member><link linkend="nlinregr">nlinregr</link></member>
+   </simplelist>
+</refsection>
+
+<refsection>
+   <title>Authors</title>
+   <simplelist type="vert">
+   <member>T. Pettersen, top@tpett.com</member>
+   </simplelist>
+</refsection>
+</refentry>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ *
+ * This help file was generated from ff2n.sci using help_from_sci().
+ *
+ -->
+
+<refentry version="5.0-subset Scilab" xml:id="ff2n" xml:lang="en"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+  <info>
+    <pubdate>$LastChangedDate: 17-May-2012 $</pubdate>
+  </info>
+
+  <refnamediv>
+    <refname>ff2n</refname><refpurpose>Defines a two level full factorial design with n factors</refpurpose>
+  </refnamediv>
+
+
+
+<refsynopsisdiv>
+   <title>Calling Sequence</title>
+   <synopsis>
+   dFF2 = ff2n(n)
+   
+   </synopsis>
+</refsynopsisdiv>
+
+<refsection>
+   <title>Parameters</title>
+   <variablelist>
+   <varlistentry><term>n:</term>
+      <listitem><para> number of factors</para></listitem></varlistentry>
+   <varlistentry><term>Design:</term>
+      <listitem><para> two level full factorial design for n factors</para></listitem></varlistentry>
+   <varlistentry><term>Flag:</term>
+      <listitem><para> optional Flag=%T (default) will use [-1 1] or [-1 0 1] as levels (otherwise [1 2] is used).</para></listitem></varlistentry>
+   </variablelist>
+</refsection>
+
+<refsection>
+   <title>Description</title>
+   <para>
+Returns a two level full factorial design matrix.
+   </para>
+   <para>
+</para>
+</refsection>
+
+<refsection>
+   <title>Examples</title>
+   <programlisting role="example"><![CDATA[
+dFF2 = ff2n(3) // 2^3 full factorial design
+dFF2alt = ff2n(3,%f) // 2^3 full factorial design with [1 2] as level indicators
+
+   ]]></programlisting>
+</refsection>
+
+<refsection>
+   <title>See also</title>
+   <simplelist type="inline">
+   <member><link linkend="fullfact">fullfact</link></member>
+   </simplelist>
+</refsection>
+
+<refsection>
+   <title>Authors</title>
+   <simplelist type="vert">
+   <member>T. Pettersen, top@tpett.com</member>
+   </simplelist>
+</refsection>
+
+<refsection>
+   <title>Bibliography</title>
+   <para>http://www.statsoft.com/textbook/experimental-design</para>
+</refsection>
+</refentry>

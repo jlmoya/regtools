@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book [
+<!--Begin Entities-->
+<!ENTITY a1a48e3daedfdeb2d9c35d1bc5f93b59c SYSTEM "file:///C:/Users/tpette/DOCUME~1/Privat/scilab/regtools/help/en_US/ff2n.xml">
+<!ENTITY a4c154a0684571b27c2085fc21433a09d SYSTEM "file:///C:/Users/tpette/DOCUME~1/Privat/scilab/regtools/help/en_US/fullfact.xml">
+<!ENTITY ac4bbc26a7aba3e4903414043d0a2f6dd SYSTEM "file:///C:/Users/tpette/DOCUME~1/Privat/scilab/regtools/help/en_US/linregr.xml">
+<!ENTITY ab293541c1c9abffe6b9decc434c3d007 SYSTEM "file:///C:/Users/tpette/DOCUME~1/Privat/scilab/regtools/help/en_US/nlinlsq.xml">
+<!ENTITY a8c81065ea0df3733f9b6b90df0cfcb2f SYSTEM "file:///C:/Users/tpette/DOCUME~1/Privat/scilab/regtools/help/en_US/nlinregr.xml">
+<!ENTITY acbfff405cec2658d611ac002f2553e34 SYSTEM "file:///C:/Users/tpette/DOCUME~1/Privat/scilab/regtools/help/en_US/qqplot.xml">
+<!--End Entities-->
+]>
+<book version="5.0-subset Scilab" xml:lang="en_US"
+      xmlns="http://docbook.org/ns/docbook"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:svg="http://www.w3.org/2000/svg"
+      xmlns:mml="http://www.w3.org/1998/Math/MathML"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      xmlns:db="http://docbook.org/ns/docbook">
+  <info xml:id='regression_tools_(regtools)_manual'>
+    <title>Regression tools (regtools)</title>
+  </info>
+
+<part xml:id='section_f29eb84a4bb31f3135768cacf4cf6c59'>
+<title>Regression tools (regtools)</title>
+&a1a48e3daedfdeb2d9c35d1bc5f93b59c;
+&a4c154a0684571b27c2085fc21433a09d;
+&ac4bbc26a7aba3e4903414043d0a2f6dd;
+&ab293541c1c9abffe6b9decc434c3d007;
+&a8c81065ea0df3733f9b6b90df0cfcb2f;
+&acbfff405cec2658d611ac002f2553e34;
+</part>
+</book>

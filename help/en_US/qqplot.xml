@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ *
+ * This help file was generated from qqplot.sci using help_from_sci().
+ *
+ -->
+
+<refentry version="5.0-subset Scilab" xml:id="qqplot" xml:lang="en"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+  <info>
+    <pubdate>$LastChangedDate: 17-May-2012 $</pubdate>
+  </info>
+
+  <refnamediv>
+    <refname>qqplot</refname><refpurpose>Draw a quantile-quantile plot</refpurpose>
+  </refnamediv>
+
+
+
+<refsynopsisdiv>
+   <title>Calling Sequence</title>
+   <synopsis>
+   qqplot(x,y) // compare two data sets x and y
+   qqplot(x,dist,p1,p2,...) // compare x with a distribution function with parameters p1,p2,...
+   qqplot(x)       // compare x with the standard normal distribution function (N(0,1))
+   
+   </synopsis>
+</refsynopsisdiv>
+
+<refsection>
+   <title>Parameters</title>
+   <variablelist>
+   <varlistentry><term>x:</term>
+      <listitem><para> data set x (vector)</para></listitem></varlistentry>
+   <varlistentry><term>y:</term>
+      <listitem><para> a second data set y (vector) to compare with x</para></listitem></varlistentry>
+   <varlistentry><term>dist:</term>
+      <listitem><para> distribution function (beta | bin | chi | chn | f | fnc | gam | nbn | nor | poi | t) (string).</para></listitem></varlistentry>
+   <varlistentry><term>p1,p2,...:</term>
+      <listitem><para> parameters relevant for the selected distribution function. See Description for details.</para></listitem></varlistentry>
+   </variablelist>
+</refsection>
+
+<refsection>
+   <title>Description</title>
+   <para>
+Compare two data sets by plotting the quantiles of each set against each other (x versys y).
+One data set may also be plotted against quantiles generated from a statistical distribution
+function.
+   </para>
+   <para>
+If the data sets come from identical distributions the points fall along the 45degree line (x=y).
+If the data sets come from distributions that are linearly dependent the points fall along a
+straight line different from x=y.
+   </para>
+   <para>
+A straight line is drawn through the first and third quantile of the two data sets.
+   </para>
+   <para>
+Calling sequence for comparing data set x with the available distribution functions:
+<itemizedlist>
+<listitem>Beta distribution : qqplot(x,'beta',A,B)</listitem>
+<listitem>Binomial distribution : qqplot(x,'bin',S,Pr,Ompr)</listitem>
+<listitem>Chi-square distribution : qqplot(x,'chi',Df) </listitem>
+<listitem>Non-central Chi-square distribution : qqplot(x,'chn',Df,Pnonc)</listitem>
+<listitem>F distribution : qqplot(x,'f',Dfn,Dfd)</listitem>
+<listitem>Non-central F distribution : qqplot(x,'fnc',Dfn,Dfd,Pnonc)</listitem>
+<listitem>Gamma distribution : qqplot(x,'gam',Shape,Scale)</listitem>
+<listitem>Negative binomial distribution : qqplot(x,'nbn',Pr,Ompr,S)</listitem>
+<listitem>Normal distribution : qqplot(x,'nor',Mean,Std)</listitem>
+<listitem>Poisson distribution : qqplot(x,'poi',Xlam)</listitem>
+<listitem>Student's T distribution : qqplot(x,'t',Df)</listitem>
+</itemizedlist>
+See help cdfDIST - where DIST is beta|bin|chi|chn|f|fnc|gam|nbn|nor|poi|t for more information
+on the parameters associated with every distribution function.
+   </para>
+   <para>
+</para>
+</refsection>
+
+<refsection>
+   <title>Examples</title>
+   <programlisting role="example"><![CDATA[
+// Compare two data sets
+x=rand(25,1); y=rand(20,1);
+scf(); qqplot(x,y); // they should come from the same distribution
+
+// The rand() function does not follow a normal N(0,1) distribution.
+scf(); qqplot(rand(100,1)); ylabel('Samples from rand()');
+
+// Use grand() to get a normal distribution
+scf(); qqplot(grand(100,1,'nor',0,1)); ylabel('grand(100,1,''nor'',0,1)');
+
+// Example from the R package (www.r.org).
+// Precipitation in US Cities, (Statistical Abstracts of the United States, 1975.).
+precip=[67.0, 54.7,  7.0, 48.5, 14.0, 17.2, 20.7, 13.0, 43.4, 40.2, 38.9, 54.5, 59.8, 48.3, 22.9,..
+11.5, 34.4, 35.1, 38.7, 30.8, 30.6, 43.1, 56.8, 40.8, 41.8, 42.5, 31.0, 31.7, 30.2, 25.9,..
+49.2, 37.0, 35.9, 15.0, 30.2,  7.2, 36.2, 45.5,  7.8, 33.4, 36.1, 40.2, 42.7, 42.5, 16.2,..
+39.0, 35.0, 37.0, 31.4, 37.6, 39.9, 36.2, 42.8, 46.4, 24.7, 49.1, 46.0, 35.9,  7.8, 48.2,..
+15.2, 32.5, 44.7, 42.6, 38.8, 17.4, 40.8, 29.1, 14.6, 59.2];
+scf(); qqplot(precip) // compare with a N(0,1) distribution.
+ylabel('Precipitation in 70 US cities [in/yr]');
+
+   ]]></programlisting>
+</refsection>
+
+<refsection>
+   <title>See also</title>
+   <simplelist type="inline">
+   <member><link linkend="grand">grand</link></member>
+   <member><link linkend="quart">quart</link></member>
+   </simplelist>
+</refsection>
+
+<refsection>
+   <title>Bibliography</title>
+   <para>Wikipedia; http://en.wikipedia.org/wiki/Q-Q_plot</para>
+</refsection>
+
+<refsection>
+   <title>Authors</title>
+   <simplelist type="vert">
+   <member>T. Pettersen, top@tpett.com</member>
+   </simplelist>
+</refsection>
+</refentry>

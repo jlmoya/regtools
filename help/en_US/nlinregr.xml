@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ *
+ * This help file was generated from nlinregr.sci using help_from_sci().
+ *
+ -->
+
+<refentry version="5.0-subset Scilab" xml:id="nlinregr" xml:lang="en"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+  <info>
+    <pubdate>$LastChangedDate: 17-May-2012 $</pubdate>
+  </info>
+
+  <refnamediv>
+    <refname>nlinregr</refname><refpurpose>Interactive non linear regression solver</refpurpose>
+  </refnamediv>
+
+
+
+<refsynopsisdiv>
+   <title>Calling Sequence</title>
+   <synopsis>
+   nlinregr(Data,Names,funDef,dfunDef,pDef,YDef[,WDef][,pEst][,pLo][,pUp][,alfa]) // Start in interactive mode.
+   [phat,yhat[,stat]]=nlinregr(Data,Names,funDef,dfunDef,pDef,YDef[,WDef][,pEst][,pLo][,pUp][,alfa]); // Run in silent command line mode.
+   nlinregr();  // Start nlinregr with example data in interactive mode.
+   </synopsis>
+</refsynopsisdiv>
+
+<refsection>
+   <title>Parameters</title>
+   <variablelist>
+   <varlistentry><term>Data:</term>
+      <listitem><para> matrix with experimental data (dependent and independent variables) stored as column vectors.</para></listitem></varlistentry>
+   <varlistentry><term>Names:</term>
+      <listitem><para> string with space separated names for each column vector in Data. E.g 'x y z'.</para></listitem></varlistentry>
+   <varlistentry><term>funDef:</term>
+      <listitem><para> string with definition of the non linear regression function yhat=f(x,p). E.g 'A+B*exp(C*x)'.</para></listitem></varlistentry>
+   <varlistentry><term>dfunDef:</term>
+      <listitem><para> optional string with definition analytical derivatives df(x,p)/dp. e.g '[ones(x),exp(C*x),B*x.*exp(C*x)]'.</para></listitem></varlistentry>
+   <varlistentry><term>pDef:</term>
+      <listitem><para> string with space separated parameter names. E.g. 'A B C'</para></listitem></varlistentry>
+   <varlistentry><term>YDef:</term>
+      <listitem><para> string with name of the dependent data variables y (from Names)' E.g 'y'</para></listitem></varlistentry>
+   <varlistentry><term>WDef:</term>
+      <listitem><para> optional flag selecting predefined weight strategy: =1(default): no weight factor wt=ones(y). =2: wt=(1)./y.^2. =3: wt=(1)./y.</para></listitem></varlistentry>
+   <varlistentry><term>pEst:</term>
+      <listitem><para> optional column vector with initial estimate for non linear regression parameters. Default is ones(np,1). pEst is also used for internal scaling of the model parameters.</para></listitem></varlistentry>
+   <varlistentry><term>pLo:</term>
+      <listitem><para> optional lower bounds on parameters as column vector or scalar (default = +%Inf).</para></listitem></varlistentry>
+   <varlistentry><term>pUp:</term>
+      <listitem><para> optional upper bounds on parameters as column vector or scalar (default = -%Inf).</para></listitem></varlistentry>
+   <varlistentry><term>alfa:</term>
+      <listitem><para> optional significance level for parameter confidence interval estimates (default alfa=0.05).</para></listitem></varlistentry>
+   <varlistentry><term>phat:</term>
+      <listitem><para> parameter value at the solution of the non linear regression problem.</para></listitem></varlistentry>
+   <varlistentry><term>yhat:</term>
+      <listitem><para> dependent variable estimates (yhat=f(x,phat)).</para></listitem></varlistentry>
+   <varlistentry><term>stat:</term>
+      <listitem><para> optional structure with regression statistics at the solution.</para></listitem></varlistentry>
+   <varlistentry><term>stat.ss :</term>
+      <listitem><para> weighted residual sum of squares ( ss = (wt.*res)'*(wt.*res) )</para></listitem></varlistentry>
+   <varlistentry><term>stat.df :</term>
+      <listitem><para> degrees of freedom ( df = length(y) - length(p) )</para></listitem></varlistentry>
+   <varlistentry><term>stat.res :</term>
+      <listitem><para> vector with residuals ( res = y-f(x,p) )</para></listitem></varlistentry>
+   <varlistentry><term>stat.p :</term>
+      <listitem><para> vector with solution of the WLSQ problem ( Minimize: ss. Subject to: plo .le. p .le. pup.)</para></listitem></varlistentry>
+   <varlistentry><term>stat.pint :</term>
+      <listitem><para> confidence interval (at alfa significance level) for reqression parameters ( pint = devp*cdft('T',df,1-alfa/2,alfa/2) )</para></listitem></varlistentry>
+   <varlistentry><term>stat.covp :</term>
+      <listitem><para> parameter covariance matrix ( covp = inv(df/ss*(J'*J)) where J is the Jacobi matrix of res wrt p at the solution p=phat)</para></listitem></varlistentry>
+   <varlistentry><term>stat.corp :</term>
+      <listitem><para> parameter correlation matrix ( corp = covp./sqrt(devp2*devp2'); where devp2=devp.^2; )</para></listitem></varlistentry>
+   <varlistentry><term>stat.devp :</term>
+      <listitem><para> standard error ( devp = sqrt(diag(covp)) ).</para></listitem></varlistentry>
+   </variablelist>
+</refsection>
+
+<refsection>
+   <title>Description</title>
+   <para>
+nlinregr is an interactive frontend for the non linear regression solver nlinlsq.
+   </para>
+   <para>
+A non linear function yhat=f(x,p) is fitted to the data set y [x] using
+non linear regression analysis. The following optimization problem is solved:
+   </para>
+   <para>
+Minimize ss=sum(((y-f(x,p)).*wt).^2) subject to: pLo .le.  p .le.  pUp.
+   </para>
+   <para>
+Regression statistics like asymptotic confidence intervals and correlation matrix
+for the model parameters are calculated and presented in a solution report inspired by
+the nls function in R Project.
+   </para>
+   <para>
+Note that new data may be loaded directly from Excel spreadsheet files when nlinregr is
+started in interactive mode.
+Use the button "Load data" from the GUI to read data from .xls files.
+The data in the Excel spreadsheets must be located in the upper left corner of the spreadsheet.
+The first row should contain Names for each column vector in Data.
+Numbers in subsequent rows are stored in Data. Number of columns must match number of columns
+in the first row.
+   </para>
+   <para>
+See the Scilab Demonstrations section for some non linear regression test problems from
+the NIST StRG Dataset Archives. nlinregr is not able to solve all these problems.
+Consider using R for hard problems.
+   </para>
+   <para>
+</para>
+</refsection>
+
+<refsection>
+   <title>Examples</title>
+   <programlisting role="example"><![CDATA[
+x=-[1:100]'/10; y=2+10*exp(x/2)+grand(100,1,'nor',0,1)/2; // some noisy data
+fun='A+B*exp(C*x)'; dfun='[ones(x), exp(C*x), B*x.*exp(C*x)]';
+[p,yhat,stat]=nlinregr([x y],'x y',fun,dfun,'A B C','y',1,[1;1;1]) // fit curve directly
+
+nlinregr([x y],'x y',fun,dfun,'A B C','y',1,[1;1;1]); // solve problem interactivly from gui
+
+// Data example from R (http://www.r-project.org/). See help on nls and DNase in R.
+conc=[0.04882812 0.04882812 0.1953125 0.1953125 0.390625 0.390625 0.78125 0.78125 1.5625 1.5625 3.125 3.125 6.25 6.25 12.5 12.5]';
+density=[0.017 0.018 0.121 0.124 0.206 0.215 0.377 0.374 0.614 0.609 1.019 1.001 1.334 1.364 1.73 1.71]';
+fun='Asym./(1+exp((xmid-log(conc))./scal))'; pnames='Asym xmid scal';
+dfun='[1.0./(exp((xmid-log(conc))/scal)+1), Asym*exp((xmid-log(conc))/scal)./(scal*(exp((xmid-log(conc))/scal)+1).^2), Asym*(xmid-log(conc)).*exp((xmid-log(conc))/scal)./(scal^2*(exp((xmid-log(conc))/scal)+1).^2)]';
+[p,yhat,stat]=nlinregr([conc density],'conc density',fun,dfun,'Asym xmid scal','density',1,[1;1;1]); // unweighted model
+
+nlinregr([conc density],'conc density',fun,dfun,'Asym xmid scal','density',2,[1;1;1]); // weighted model
+
+   ]]></programlisting>
+</refsection>
+
+<refsection>
+   <title>See also</title>
+   <simplelist type="inline">
+   <member><link linkend="nlinlsq">nlinlsq</link></member>
+   <member><link linkend="linregr">linregr</link></member>
+   </simplelist>
+</refsection>
+
+<refsection>
+   <title>Authors</title>
+   <simplelist type="vert">
+   <member>T. Pettersen, top@tpett.com</member>
+   </simplelist>
+</refsection>
+
+<refsection>
+   <title>Bibliography</title>
+   <para>The R Project (www.r-project.org)</para>
+   <para>NIST StRD Dataset Archives - Non linear regression http://www.itl.nist.gov/div898/strd/general/dataarchive.html</para>
+</refsection>
+</refentry>

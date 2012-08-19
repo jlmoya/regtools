@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ *
+ * This help file was generated from linregr.sci using help_from_sci().
+ *
+ -->
+
+<refentry version="5.0-subset Scilab" xml:id="linregr" xml:lang="en"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+  <info>
+    <pubdate>$LastChangedDate: 17-May-2012 $</pubdate>
+  </info>
+
+  <refnamediv>
+    <refname>linregr</refname><refpurpose>An interactive tool for carrying out multi linear regression.</refpurpose>
+  </refnamediv>
+
+
+
+<refsynopsisdiv>
+   <title>Calling Sequence</title>
+   <synopsis>
+   linregr()           // start linregr with some demo data in interactive mode...
+   linregr(Data[,Names]) // Start in interactive mode using the data set Data (with optional column names Names)
+   [beta,stat]=linregr(Data,Names,Zdef,Ydef[,alfa]) // run in silent command line mode - returning the results as variables.
+   </synopsis>
+</refsynopsisdiv>
+
+<refsection>
+   <title>Parameters</title>
+   <variablelist>
+   <varlistentry><term>Data :</term>
+      <listitem><para> matrix containing experimental variables as column vectors.</para></listitem></varlistentry>
+   <varlistentry><term>Names:</term>
+      <listitem><para> optional space separated string containing names for each column in Data. Each name must be a valid name for a Scilab variable.</para></listitem></varlistentry>
+   <varlistentry><term>Zdef:</term>
+      <listitem><para> optional space separated string defining the linear regression matrix Z</para></listitem></varlistentry>
+   <varlistentry><term>Ydef:</term>
+      <listitem><para> optional space separated string defining the dependent variable</para></listitem></varlistentry>
+   <varlistentry><term>alfa:</term>
+      <listitem><para> optional significance level (default = 0.05) for the parameter confidence interval estimate.</para></listitem></varlistentry>
+   <varlistentry><term>beta:</term>
+      <listitem><para> parameter estimates (only in command line mode).</para></listitem></varlistentry>
+   <varlistentry><term>stat:</term>
+      <listitem><para> data structure with various statistical results (only in command line mode).</para></listitem></varlistentry>
+   <varlistentry><term>stat.Z:</term>
+      <listitem><para> dependent variable matrix</para></listitem></varlistentry>
+   <varlistentry><term>stat.ZTZ:</term>
+      <listitem><para> ZTZ=Z'*Z;</para></listitem></varlistentry>
+   <varlistentry><term>stat.cov:</term>
+      <listitem><para> cov=inv(ZTZ); // covariance matrix</para></listitem></varlistentry>
+   <varlistentry><term>stat.b:</term>
+      <listitem><para> b=cov*Z'*Y; // linear regression parameters</para></listitem></varlistentry>
+   <varlistentry><term>stat.bint:</term>
+      <listitem><para> bint=cdft('T',n-p,1-alfa/2,alfa/2)*sqrt(diag(cov)); // confidence interval for b</para></listitem></varlistentry>
+   <varlistentry><term>stat.bdev:</term>
+      <listitem><para> bdev=sqrt(diag(cov))*SSxy; // Standard deviation of estimate</para></listitem></varlistentry>
+   <varlistentry><term>stat.Yhat:</term>
+      <listitem><para> Yhat=Z*b; // estimate of Y</para></listitem></varlistentry>
+   <varlistentry><term>stat.Y:</term>
+      <listitem><para> dependent observations</para></listitem></varlistentry>
+   <varlistentry><term>stat.resid:</term>
+      <listitem><para> resid=Y-Yhat; // residuals</para></listitem></varlistentry>
+   <varlistentry><term>stat.SSr:</term>
+      <listitem><para> SSr=resid'*resid; // residual error</para></listitem></varlistentry>
+   <varlistentry><term>stat.Ybar:</term>
+      <listitem><para> Ybar=mean(Y); // average Y</para></listitem></varlistentry>
+   <varlistentry><term>stat.SSt:</term>
+      <listitem><para> SSt=(Y-Ybar)'*(Y-Ybar); // variance of the data points Y about mean(Y)</para></listitem></varlistentry>
+   <varlistentry><term>stat.SSe:</term>
+      <listitem><para> SSe=(Yhat-Ybar)'*(Yhat-Ybar); // variance of the estimates Yhat about mean(Y)</para></listitem></varlistentry>
+   <varlistentry><term>stat.SSxy:</term>
+      <listitem><para> SSxy=sqrt(SSr/(n-p)); // standard error of estimates of y on x</para></listitem></varlistentry>
+   <varlistentry><term>stat.SSy:</term>
+      <listitem><para> SSy=sqrt(SSt/length(Y));</para></listitem></varlistentry>
+   <varlistentry><term>stat.R2:</term>
+      <listitem><para> R2=1-SSr/SSt; // R^2 of multiple correlation of y on all x</para></listitem></varlistentry>
+   <varlistentry><term>stat.R2adj:</term>
+      <listitem><para> R2adj=1-SSr/SSt*(n-1)/(n-p-1); // R2 adjusted for the number of regression variables</para></listitem></varlistentry>
+   </variablelist>
+</refsection>
+
+<refsection>
+   <title>Description</title>
+   <para>
+linregr is a user friendly tool for analysing data using multi linear regression.
+   </para>
+   <para>
+In interactive mode a graphical user interface is presented and statistical results from
+regression analysis is presented in the Scilab Console window.
+   </para>
+   <para>
+When run in silent command line mode the results are returned as the parameters beta and stat.
+In this mode no statistical information is displayed in the Scilab Console window.
+   </para>
+   <para>
+See the Scilab Demonstrations section for some linear regression test problems from
+the NIST StRD Dataset Archives.
+   </para>
+   <para>
+</para>
+</refsection>
+
+<refsection>
+   <title>Examples</title>
+   <programlisting role="example"><![CDATA[
+X=[0:.1:2*%pi]'; Y=[X+rand(X)+X.^2+10*sin(X)];
+[b,stat]=linregr([Y X],'y x','x x.^2 sin(x)','y')  // solve problem in command line mode
+
+// Example from http://en.wikipedia.org/wiki/Simple_linear_regression
+Height=[1.47, 1.50, 1.52, 1.55, 1.57, 1.60, 1.63, 1.65, 1.68, 1.70, 1.73, 1.75, 1.78, 1.80, 1.83]';
+Weight=[52.21, 53.12, 54.48, 55.84, 57.20, 58.57, 59.93, 61.29, 63.11, 64.47, 66.28, 68.10, 69.92, 72.19, 74.46]';
+linregr([Weight Height],'Weight Height'); // Interactive mode
+
+   ]]></programlisting>
+</refsection>
+
+<refsection>
+   <title>See also</title>
+   <simplelist type="inline">
+   <member><link linkend="nlinregr">nlinregr</link></member>
+   <member><link linkend="nlinlsq">nlinlsq</link></member>
+   </simplelist>
+</refsection>
+
+<refsection>
+   <title>Bibliography</title>
+   <para>http://en.wikipedia.org/wiki/Regression_analysis</para>
+   <para>NIST StRD Dataset Archives - Linear regression: http://www.itl.nist.gov/div898/strd/general/dataarchive.html</para>
+</refsection>
+
+<refsection>
+   <title>Authors</title>
+   <simplelist type="vert">
+   <member>T. Pettersen, top@tpett.com</member>
+   </simplelist>
+</refsection>
+</refentry>

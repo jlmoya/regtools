@@ -1,0 +1,13 @@
+﻿Changelog - regtools
+
+version 0.3 17-Mai-2012
+	* Fixed some major bugs in linregr() thanks to Manfred Enning, Aachen.
+
+version 0.2 25-Feb-2011
+	* Added analytical derivaties to nlinlsq and nlinregr.
+	  Updated demos especially for nlinregr. 
+
+version 0.1 03-Feb-2011
+        * Initial revision
+
+ -- Torbjørn Pettersen <top@tpett.com> 03-Feb-2011
