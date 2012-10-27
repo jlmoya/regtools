@@ -2,22 +2,20 @@ function varargout=linregr(varargin)
 // An interactive tool for carrying out multi linear regression.
 // Calling Sequence
 //  linregr()           // start linregr with some demo data in interactive mode...
-//  linregr(Data[,Names]) // Start in interactive mode using the data set Data (with optional column names Names) 
+//  linregr(Data[,Names,ZDef,Ydef,alfa]) // Start in interactive mode using the data set Data (with optional column names Names, regression variables ZDef, Ydef and alfa.) 
 //  [beta,stat]=linregr(Data,Names,Zdef,Ydef[,alfa]) // run in silent command line mode - returning the results as variables.
 // Parameters
 //  Data : matrix containing experimental variables as column vectors.
 //  Names: optional space separated string containing names for each column in Data. Each name must be a valid name for a Scilab variable.
 //  Zdef: optional space separated string defining the linear regression matrix Z
 //  Ydef: optional space separated string defining the dependent variable
-//  alfa: optional significance level (default = 0.05) for the parameter confidence interval estimate.
+//  alfa: optional significance level (default = 0.05) for the parameter confidence interval estimate
 //  beta: parameter estimates (only in command line mode).
 //  stat: data structure with various statistical results (only in command line mode).
 //  stat.Z: dependent variable matrix
 //  stat.ZTZ: ZTZ=Z'*Z; 
 //  stat.cov: cov=inv(ZTZ); // covariance matrix
 //  stat.b: b=cov*Z'*Y; // linear regression parameters
-//  stat.bint: bint=cdft('T',n-p,1-alfa/2,alfa/2)*sqrt(diag(cov)); // confidence interval for b
-//  stat.bdev: bdev=sqrt(diag(cov))*SSxy; // Standard deviation of estimate
 //  stat.Yhat: Yhat=Z*b; // estimate of Y
 //  stat.Y: dependent observations 
 //  stat.resid: resid=Y-Yhat; // residuals
@@ -27,6 +25,9 @@ function varargout=linregr(varargin)
 //  stat.SSe: SSe=(Yhat-Ybar)'*(Yhat-Ybar); // variance of the estimates Yhat about mean(Y)
 //  stat.SSxy: SSxy=sqrt(SSr/(n-p)); // standard error of estimates of y on x
 //  stat.SSy: SSy=sqrt(SSt/length(Y));  
+//  stat.bdev: bdev=sqrt(diag(cov))*SSxy; // Standard deviation of estimate
+//  stat.bdelta: bdelta=cdft('T',n-p,1-alfa/2,alfa/2)*bdev; // confidence interval for b
+//  stat.bint: bint=[b-bdelta, b+bdelta]; // confidence interval for b given as min and max values
 //  stat.R2: R2=1-SSr/SSt; // R^2 of multiple correlation of y on all x
 //  stat.R2adj: R2adj=1-SSr/SSt*(n-1)/(n-p-1); // R2 adjusted for the number of regression variables
 // Description
@@ -174,7 +175,8 @@ select cmd
         varargout=list([],[]);    // exit empty handed
       else
         disp('linregr: Exporting b and stat to Console memory... (if you get an error message - it won''t work due to a bug.)');
-        [b,stat]=return(ud.b,ud.stat);
+        b=ud.b; stat=ud.stat;
+        [b,stat]=return(b,stat);
       end
 end
 endfunction
@@ -232,9 +234,14 @@ function [b,stat]=linregr_solve(Data,Names,Zdef,Ydef,alfa,Interactive)
     SSxy=sqrt(SSr/(n-p));             // Residual standard deviation
     SSy=sqrt(SSt/length(Y));
     bdev=sqrt(diag(cov))*SSxy;        // Standard deviation of estimate
-    bint=cdft('T',n-p,1-alfa/2,alfa/2)*sqrt(diag(cov))*SSxy; // confidence interval for b
+    bdelta=cdft('T',n-p,1-alfa/2,alfa/2)*bdev; // confidence interval for b
+    bint=[b-bdelta, b+bdelta];      // confidence interval for b given as min and max values
     R2=1-SSr/SSt;                   // coefficient^2 of multiple correlation of y on all x
-    R2adj=1-SSr/SSt*(n-1)/(n-p-1);  // R2 adjusted for the number of independent variables in the regression model
+    if n-p-1>0 then     // bugfix due to Radovan Omorjan, October 2012.
+        R2adj=1-SSr/SSt*(n-1)/(n-p-1);  // R2 adjusted for the number of independent variables in the regression model
+    else
+        R2adj=%nan;
+    end
     mod_txt=yvar+'=';
     for i=1:size(zvar,'r')
         if zvar(i)=='1' then
@@ -249,8 +256,10 @@ function [b,stat]=linregr_solve(Data,Names,Zdef,Ydef,alfa,Interactive)
         printf('\t--------------------------------------------------------------------\n');
         printf('\tSource                       df    SS         MS         F \n');
         printf('\t--------------------------------------------------------------------\n');
-        printf('\tSSr = sum[(Yhat-mean(Y))^2] %2i    %10.2e %10.2e %10.2e\n',p-1,SSe,SSe/(p-1),(SSe/(p-1))/(SSr/(n-p)));
-        printf('\tSSe = sum[(Y-Yhat)^2]       %2i    %10.2e %10.2e\n',n-p,SSr,SSr/(n-p));
+        if p==1 then MSe=%nan; else MSe = SSe/(p-1); end
+        if n-p==0 then MSr=%nan; else MSr = SSr/(n-p); end
+        printf('\tSSr = sum[(Yhat-mean(Y))^2] %2i    %10.2e %10.2e %10.2e\n',p-1,SSe,MSe,MSe/MSr);
+        printf('\tSSe = sum[(Y-Yhat)^2]       %2i    %10.2e %10.2e\n',n-p,SSr,MSr);
         printf('\t--------------------------------------------------------------------\n');
         printf('\tSSt = sum[(Y-mean(Y))^2]    %2i    %10.2e\n',n-1,SSt);
         printf('\t--------------------------------------------------------------------\n');
@@ -266,7 +275,7 @@ function [b,stat]=linregr_solve(Data,Names,Zdef,Ydef,alfa,Interactive)
         printf('\tParameter   Estimate     alpha=%5g  | of estimate\n',alfa);
         printf('\t--------------------------------------------------------------------\n');
         for i=1:size(zvar,'r'),
-            printf('\tbeta(%i) = %10.2e +/- %10.2e   | %10.2e\n',i,b(i),bint(i),bdev(i));
+            printf('\tbeta(%i) = %10.2e +/- %10.2e   | %10.2e\n',i,b(i),bdelta(i),bdev(i));
         end
         printf('\t--------------------------------------------------------------------\n');
         printf('\tR^2 multiple correlation of y on all x:      %0.3f\n',R2);
@@ -303,7 +312,7 @@ function [b,stat]=linregr_solve(Data,Names,Zdef,Ydef,alfa,Interactive)
   
   // Confidence interval for yhat:
   // yhat|xi = Z*b +/- cdft('T',n-p,1-alfa/2,alfa/2)*sqrt(1/(n-p)*SSr*(1/n+(xi-mean(x(i)))^2))
-  stat.Z=Z; stat.ZTZ=ZTZ; stat.cov=cov; stat.b=b; stat.bint=bint; stat.bdev=bdev;
+  stat.Z=Z; stat.ZTZ=ZTZ; stat.cov=cov; stat.b=b; stat.bdelta=bdelta; stat.bint=bint; stat.bdev=bdev;
   stat.Yhat=Yhat; stat.Y=Y; stat.resid=resid; stat.SSr=SSr; stat.Ybar=Ybar;
   stat.SSt=SSt; stat.SSe=SSe; stat.SSxy=SSxy; stat.SSy=SSy; stat.R2=R2;
   stat.R2adj=R2adj;
