@@ -218,7 +218,7 @@ if argn(2)==1 then // Assume that we where called from the gui
       [phat,stat]=nlinlsq(list(curve),list(dcurve),ud.data,y,wt,pest,plo,pup,list(10,get(ud.h_p,'string')));
       set(ud.h_pEst,'string',sprintf('%.3g ',phat(:))); // update gui
       if max(phat./pest(:))>1e3 | min(phat./pest(:))<1e-3 then 
-        printf('nlinregr: Poor initial estimate - leads to poor scaling.\n\tPress Solve to re solve model with better scaling.\n");
+        printf('nlinregr: Poor initial estimate - leads to poor scaling.\n\tPress Solve to re solve model with better scaling.\n');
       end
       
       yhat=curve(phat,ud.data);
