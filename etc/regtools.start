@@ -12,24 +12,14 @@ if isdef("regtoolslib") then
  return;
 end
 
-// Make sure that all dependencies are present. 
+// Make sure that all dependencies are present.
+// macOS/2027: guimaker (ATOMS) does not build on arm64/Scilab 2027, so it is no longer
+// auto-installed at load time (that used to abort the whole toolbox load when ATOMS was
+// unreachable or the module failed to build). linregr/nlinregr check for guimaker
+// themselves when their interactive GUI is invoked and raise a clear error if it is
+// missing; the batch functions (ff2n, fullfact, nlinlsq, qqplot) never touch guimaker.
 if ~isdef("guimaker") then
-    disp("guimaker is not installed - trying to install.");
-    gpath=SCI+filesep()+'contrib'+filesep()+'guimaker';
-    if isdir(gpath) then
-        try 
-            exec(gpath+filesep()+'loader.sce');
-        catch 
-            error('Failed to load guimaker from '+gpath);
-        end
-    else
-        try 
-            atomsInstall('guimaker','user');
-        catch
-            error('Failed to install guimaker from atoms.');
-        end
-        disp("Installed apifun - restart of Scilab is required.");
-    end
+    disp("regtools: guimaker not found - linregr/nlinregr interactive GUIs will be unavailable (batch functions are unaffected).");
 end
 
 etc_tlbx = get_absolute_file_path('regtools.start');

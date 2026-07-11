@@ -72,6 +72,9 @@ if argn(2)==0 then
 end
 
 if typeof(varargin(1))=='constant' & argn(1)<2 then  // First call - initialize GUI
+  if ~isdef("guimaker") then
+    error(sprintf(gettext("%s: guimaker is not installed - the interactive GUI is unavailable.\n\tUse command-line mode instead: [beta,stat]=%s(Data,Names,Zdef,Ydef,alfa).\n"),'linregr','linregr'));
+  end
   DATA=varargin(1);
   [n,col]=size(DATA); // n=data points and col = number of columns (variables)
   if argn(2)>=2 then

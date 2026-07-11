@@ -279,6 +279,9 @@ Names=tokens(Names); // turn space separated string into array
 if size(Names,'*')<>col then error(sprintf(gettext("%s: Wrong size for input argument #%d: \n\tNumber of space separated names must match number of columns.\n"),'linregr',2));  end
 
 if argn(1)<2 then   // interactive mode
+  if ~isdef("guimaker") then
+    error(sprintf(gettext("%s: guimaker is not installed - the interactive GUI is unavailable.\n\tUse command-line mode instead: [phat,yhat,stat]=%s(Data,Names,funDef,dfunDef,pDef,YDef,...).\n"),'nlinregr','nlinregr'));
+  end
   if findobj('tag','nlinregr_DataSource') then
      error(sprintf(gettext('%s: nlinregr is already running.\n'),'nlinregrn'));
   end
